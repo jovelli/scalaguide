@@ -1,7 +1,7 @@
 
 import com.jovelli.guide._
  
-object Test {;import org.scalaide.worksheet.runtime.library.WorksheetSupport._; def main(args: Array[String])=$execute{;$skip(148); 
+object Test {;import org.scalaide.worksheet.runtime.library.WorksheetSupport._; def main(args: Array[String])=$execute{;$skip(149); 
   // val user: User = new PremiumUser("Romulo", 10)
   val user: User = new FreeUser("Maurício", 10, 0.4);System.out.println("""user  : com.jovelli.guide.User = """ + $show(user ));$skip(271); 
   
@@ -14,7 +14,7 @@ object Test {;import org.scalaide.worksheet.runtime.library.WorksheetSupport._; 
 
   println(message);$skip(49); 
 
-  val xs: List[Int] = 11 :: 2 :: 4 :: 10 :: Nil;System.out.println("""xs  : List[Int] = """ + $show(xs ));$skip(337); 
+  val xs: List[Int] = 11 :: 2 :: 4 :: 10 :: Nil;System.out.println("""xs  : List[Int] = """ + $show(xs ));$skip(339); 
   //val xs: List[Int] = 11 :: 2 :: Nil
 
   val message2 = xs match {
@@ -54,6 +54,23 @@ object Test {;import org.scalaide.worksheet.runtime.library.WorksheetSupport._; 
 		number <- testee
 		if (number * 3 ==  9)
 	}
-	yield number;System.out.println("""res1: List[Int] = """ + $show(res$1))}
+	yield number;System.out.println("""res1: List[Int] = """ + $show(res$1));$skip(143); 
 
+
+	//Anonymous Patterns
+	val wordsFrequency = ("Orange", 10) :: ("Strawberry", 5) :: ("Apple", 15) :: ("Melon", 11) :: ("Pineapple", 2) :: Nil;System.out.println("""wordsFrequency  : List[(String, Int)] = """ + $show(wordsFrequency ));$skip(91); 
+	
+	val predicateQty: ((String, Int)) => Boolean = { case (_, qty) => qty > 3 && qty < 14 };System.out.println("""predicateQty  : ((String, Int)) => Boolean = """ + $show(predicateQty ));$skip(73); 
+	
+  val mapName: ((String, Int)) => String = { case (name, _) => name };System.out.println("""mapName  : ((String, Int)) => String = """ + $show(mapName ));$skip(148); 
+  
+  //Partial Functions
+  def filtrarFrequenciaPf: PartialFunction[(String, Int), String] = { case (word, freq) if freq > 3 && freq < 14 => word };System.out.println("""filtrarFrequenciaPf: => PartialFunction[(String, Int),String]""");$skip(163); 
+   
+	def filtrosFrequenciaPalavras(words: Seq[(String, Int)]): Seq[String] =  words.collect(filtrarFrequenciaPf);System.out.println("""filtrosFrequenciaPalavras: (words: Seq[(String, Int)])Seq[String]""");$skip(45); val res$2 =  //words.collect filter(predicateQty).map(mapName)
+	
+	filtrosFrequenciaPalavras(wordsFrequency);System.out.println("""res2: Seq[String] = """ + $show(res$2))}
+	
+	
+	
 }
