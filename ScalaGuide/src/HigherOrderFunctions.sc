@@ -28,9 +28,11 @@ object HigherOrderFunctions {
                                                   //| PAM with SPAM and SPAM to drink,me@gmail.com), Email(Here is you card,cardid
                                                   //| idnotrequest@gmail.com,Your card is ready to be used,me@gmail.com))
                                                     
-    
-	newEmailsForUser(unpleasantEmails, max)   //> res0: Seq[com.jovelli.guide.Email] = List(Email(BORROW ME MONEY,John@gmail.c
-                                                  //| om,I need some money, please help,me@gmail.com), Email(Here is you card,card
-                                                  //| ididnotrequest@gmail.com,Your card is ready to be used,me@gmail.com))
+     
+	newEmailsForUser(goodEmails, sendBy)      //> res0: Seq[com.jovelli.guide.Email] = List(Email(Happy Birthday,johnJohn@gmai
+                                                  //| l.com,Happy Birthday,me@gmail.com), Email(here is your new JOB, your opportu
+                                                  //| nity,here@gmail.com,Congratulations!,me@gmail.com), Email(Congratulations, y
+                                                  //| ou won a free weekend,there@gmail.com,Take a rest,me@gmail.com), Email(Inter
+                                                  //| stingTechnolyStuff,overthere@gmail.com,New gadget,me@gmail.com))
 	
 }

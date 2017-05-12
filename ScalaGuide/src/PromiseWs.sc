@@ -15,7 +15,7 @@ object PromiseWs {
   	case Failure(FoodException(msg)) => println(msg)
   	case _ => println("No case selected")
   }
-          
+
   Thread.sleep(3000)                              //> Start preparing lunch
                                                   //| Finish preparing lunch
                                                   //| Food(100.0)/

@@ -29,8 +29,10 @@ object HigherOrderFunction {
     mails.filter(filter) 
   } 
     
-  val sendByOneOf: Set[String] => EmailFilter = senders => email => senders.exists(s => email.sender.toLowerCase.contains(s.toLowerCase)) 
-  val notSendByAnyOf: Set[String] => EmailFilter = senders => email => !senders.exists(s => email.sender.toLowerCase.contains(s.toLowerCase)) 
+  val sendersCheck: (Set[String], Email) => Boolean = (senders, email) => senders.exists(s => email.sender.toLowerCase.contains(s.toLowerCase))
+  val sendByOneOf: Set[String] => EmailFilter = senders => email => sendersCheck(senders, email)
+  val notSendByAnyOf: Set[String] => EmailFilter = senders => email => !sendersCheck(senders, email)
+  
   val blockedContent: Set[String] => EmailFilter = blockedTerms => email => !blockedTerms.exists(term => email.text.contains(term))
   
   val sizeConstraint: SizeChecker => EmailFilter = f => email => f(email.text.size)   
