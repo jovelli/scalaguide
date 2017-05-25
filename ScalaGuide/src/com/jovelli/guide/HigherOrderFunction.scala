@@ -41,32 +41,37 @@ object HigherOrderFunction {
   val blockedContent: Set[String] => EmailFilter = blockedTerms => email => !blockedTerms.exists(term => email.text.contains(term))
   
   val sizeConstraintF: SizeChecker => EmailFilter = f => email => f(email.text.size)   
-  val minimumSize: Int => EmailFilter = min => sizeConstraintF(_ >= min)
-  val maximumSize: Int => EmailFilter = max => sizeConstraintF(_ <= max)
   
   //transformation pipeline
-  val addMissingSubject = (email: Email) => if (email.subject.isEmpty()) email.copy(subject = "No Subject") else email
-  val checkSpelling = (email: Email) => email.copy(text = email.text.replaceAll(" u ", "you"))
-  val removeInappropriateLanguage = (email: Email) => email.copy(text = email.text.replaceAll("BAD_WORD", "***"))
-  val AddAdsFooter = (email: Email) => email.copy(text = email.text + "\nThis email came from EmailSender App :)")  
+  private val addMissingSubject = (email: Email) => if (email.subject.isEmpty()) email.copy(subject = "No Subject") else email
+  private val checkSpelling = (email: Email) => email.copy(text = email.text.replaceAll(" u ", "you"))
+  private val removeInappropriateLanguage = (email: Email) => email.copy(text = email.text.replaceAll("BAD_WORD", "***"))
+  private val AddAdsFooter = (email: Email) => email.copy(text = email.text + "\nThis email came from EmailSender App :)")  
   
   val pipeline = Function.chain(Seq(addMissingSubject, checkSpelling, removeInappropriateLanguage, AddAdsFooter))
   
   //Partially applied Functions
   type DoubleIntPred = (Int, Int) => Boolean
-  def sizeConstraint(predicate: DoubleIntPred, email: Email, n: Int) = predicate(email.text.size, n)
+  // def sizeConstraint(predicate: DoubleIntPred, email: Email, n: Int) = predicate(email.text.size, n)
+  def sizeConstraint(predicate: DoubleIntPred)(email: Email)(n: Int): Boolean = predicate(email.text.size, n)
+  val sizeConstraintFn: DoubleIntPred => Email => Int => Boolean = sizeConstraint _
   
-  val gt: DoubleIntPred = _ > _
-  val ge: DoubleIntPred = _ >= _
-  val lt: DoubleIntPred = _ < _
-  val le: DoubleIntPred = _ <= _
-  val eq: DoubleIntPred = _ == _ 
+  private val gt: DoubleIntPred = _ > _
+  private val ge: DoubleIntPred = _ >= _
+  private val lt: DoubleIntPred = _ < _
+  private val le: DoubleIntPred = _ <= _
+  private val eq: DoubleIntPred = _ == _ 
   
-  val max20: EmailFilter = fixedSize20Constraint(gt, _: Email)
-  val min20: EmailFilter = fixedSize20Constraint(lt, _: Email)
-  val variableSize: (DoubleIntPred, Int) => EmailFilter = (d, n) => email => sizeConstraint(d, email, n)
+  val maximumSize: Email => Int => Boolean = email => sizeConstraint(le)(email)
+  val minimumSize: Email => Int => Boolean = email => sizeConstraint(ge)(email)
   
-  val fixedSize20Constraint: (DoubleIntPred, Email) => Boolean = sizeConstraint(_: DoubleIntPred, _: Email, 20) //sizeConstraint _
+  val variableSize: (DoubleIntPred, Int) => EmailFilter = (d, n) => email => sizeConstraint(d)(email)(n)
+  
+  val fixedSize20Constraint: (DoubleIntPred, Email) => Boolean = sizeConstraint(_: DoubleIntPred)(_: Email)(20) 
+  
+  val existingSum: (Int, Int) => Int = _ + _
+  val newCurriedSum: Int => Int => Int = existingSum.curried
+  val backToExistingSum: (Int, Int) => Int = Function.uncurried(newCurriedSum)
   
   
 }

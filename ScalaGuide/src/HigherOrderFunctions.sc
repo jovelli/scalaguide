@@ -10,8 +10,10 @@ object HigherOrderFunctions {
   val notSendBy: EmailFilter = notSendByAnyOf(Set("BuyIt", "SPAM", "Marco", "johaan"))
                                                   //> notSendBy  : com.jovelli.guide.HigherOrderFunction.EmailFilter = <function1>
                                                   //| 
-  val maximum: EmailFilter = maximumSize(30)      //> maximum  : com.jovelli.guide.HigherOrderFunction.EmailFilter = <function1>
-  val minimum: EmailFilter = minimumSize(12)      //> minimum  : com.jovelli.guide.HigherOrderFunction.EmailFilter = <function1>
+  val maximum: EmailFilter = email => maximumSize(email)(30)
+                                                  //> maximum  : com.jovelli.guide.HigherOrderFunction.EmailFilter = <function1>
+  val minimum: EmailFilter = email => minimumSize(email)(1)
+                                                  //> minimum  : com.jovelli.guide.HigherOrderFunction.EmailFilter = <function1>
   val block: EmailFilter = blockedContent(Set("card", "money"))
                                                   //> block  : com.jovelli.guide.HigherOrderFunction.EmailFilter = <function1>
   

@@ -17,11 +17,11 @@ object FutureTest {
   } */
     
   prepareCappuccino()                             //> inicio leite fermentando
-                                                  //| termino leite fermentando
-                                                  //| inicio selecionando cafe
-                                                  //| termino selecionando cafe
                                                   //| inicio esquentando agua
+                                                  //| inicio selecionando cafe
                                                   //| hot, it's hot
+                                                  //| termino leite fermentando
+                                                  //| termino selecionando cafe
                                                   //| inicio cafe fermentando
                                                   //| termino cafe fermentando
                                                   //| res0: scala.util.Try[com.jovelli.guide.Cappuccino] = Success(Cappuccino(DONE
